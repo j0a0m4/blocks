@@ -4,7 +4,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 import java.time.Month
-import java.time.Year
 
 class ShowTest : StringSpec({
  "show DSL constructor should create new instance of Show" {
@@ -17,6 +16,7 @@ class ShowTest : StringSpec({
              title shouldBe "Elite"
              start shouldBe LocalDate.of(2018, Month.OCTOBER, 5)
              rating shouldBe THREE_STARS
+             hasEnded shouldBe false
          }
      }
  }

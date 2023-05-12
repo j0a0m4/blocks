@@ -8,6 +8,8 @@ data class Show(
     val favorite: Boolean = false,
     val rating: Rating?
 ) {
+    val hasEnded = end != null
+
     constructor(b: Builder) : this(b.title, b.start, b.end, b.favorite, b.rating)
 
     companion object {
