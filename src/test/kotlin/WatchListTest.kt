@@ -15,25 +15,49 @@ class WatchListTest : StringSpec({
                 favorite = true
                 rating = FIVE_STARS
             })
-            add(show {
+            show {
                 title = "The Mentalist"
                 start = LocalDate.of(2008, Month.SEPTEMBER, 23)
                 end = LocalDate.of(2015, Month.FEBRUARY, 18)
                 favorite = true
                 rating = FOUR_STARS
-            })
-            add(show {
+            }.run { add(this) }
+            show {
                 title = "Grey's Anatomy"
                 start = LocalDate.of(2005, Month.MARCH, 27)
                 favorite = false
                 rating = THREE_STARS
-            })
+            }.also { add(it) }
         }.run {
             isNullOrEmpty() shouldBe false
             size shouldBe 3
             get(0).title shouldBe "Doctor Who"
             get(1).title shouldBe "The Mentalist"
             get(2).title shouldBe "Grey's Anatomy"
+        }
+    }
+
+    "WatchList should create read only list of shows 2" {
+        watchList {
+            of(
+                show {
+                    title = "Billions"
+                    start = LocalDate.of(2016, Month.JANUARY, 17)
+                    favorite = true
+                    rating = FIVE_STARS
+                },
+                show {
+                    title = "Jane the Virgin"
+                    start = LocalDate.of(2014, Month.OCTOBER, 13)
+                    end = LocalDate.of(2019, Month.JULY, 31)
+                    rating = TWO_STARS
+                }
+            )
+        }.run {
+            isNullOrEmpty() shouldBe false
+            size shouldBe 2
+            first().title shouldBe "Billions"
+            last().title shouldBe "Jane the Virgin"
         }
     }
 })
