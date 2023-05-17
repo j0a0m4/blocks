@@ -1,9 +1,8 @@
 typealias WatchList = List<Show>
 
-fun watchList(init: MutableList<Show>.() -> Unit): WatchList =
-    mutableListOf<Show>()
-        .apply(init)
-        .run(WatchList::toList)
+operator fun MutableList<Show>.plus(show: Show) {
+    add(show)
+}
 
-fun MutableList<Show>.of(vararg shows: Show) =
-    addAll(shows)
+fun watchList(supplier: () -> WatchList): WatchList =
+    supplier()

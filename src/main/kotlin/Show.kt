@@ -4,9 +4,9 @@ import java.time.LocalDate
 data class Show(
     val title: String,
     val start: LocalDate,
-    val end: LocalDate?,
+    val end: LocalDate? = null,
     val favorite: Boolean = false,
-    val rating: Rating?
+    val rating: Rating? = null
 ) {
     val hasEnded = end != null
 
@@ -21,6 +21,11 @@ data class Show(
             var rating: Rating?
         }
     }
+
+    infix operator fun plus(aShow: Show): List<Show> =
+        listOf(this, aShow)
+
+    operator fun unaryPlus(): Show = this
 }
 
 fun show(init: Builder.() -> Unit): Show =
