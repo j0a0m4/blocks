@@ -19,13 +19,10 @@ data class Show(
             var favorite: Boolean = false,
             var rating: Rating? = null
         ) {
-            val Started = this
-            val Rate = this
+            val started = On { DateFactory(it) { date -> start = date } }
+            val ended = On { DateFactory(it) { date -> end = date } }
 
-            infix fun on(d: LocalDate) {
-                start = d
-            }
-
+            val rate = this
             infix fun it(emoji: StarEmoji) = Rating[emoji].let {
                 rating = it
                 if (it.value > 3) {
@@ -35,3 +32,5 @@ data class Show(
         }
     }
 }
+
+

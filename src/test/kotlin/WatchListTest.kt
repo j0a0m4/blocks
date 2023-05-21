@@ -9,19 +9,19 @@ class WatchListTest : StringSpec({
         watchList {
             show {
                 title = "Doctor Who"
-                Rate it "⭐⭐⭐⭐⭐"
-                Started on LocalDate.of(2005, Month.MARCH, 26)
+                started on 26 March 2005
+                rate it "⭐⭐⭐⭐⭐"
             }
             show {
                 title = "The Mentalist"
-                Rate it "⭐⭐⭐⭐"
-                Started on LocalDate.of(2008, Month.SEPTEMBER, 23)
-                end = LocalDate.of(2015, Month.FEBRUARY, 18)
+                started on 23 September 2008
+                ended on 18 February 2015
+                rate it "⭐⭐⭐⭐"
             }
             show {
                 title = "Grey's Anatomy"
-                Started on LocalDate.of(2005, Month.MARCH, 27)
-                Rate it "⭐⭐⭐"
+                started on 27 March 2005
+                rate it "⭐⭐⭐"
             }
         }.run {
             isNullOrEmpty() shouldBe false
