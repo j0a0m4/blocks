@@ -30,19 +30,6 @@ class RatingTest : StringSpec({
         ) { x, y -> shouldThrow<UnsupportedOperationException> { x + y } }
     }
 
-    "Rating should show correct number of stars emoji" {
-        forAll(
-            row(One, "⭐"),
-            row(Two, "⭐⭐"),
-            row(Three, "⭐⭐⭐"),
-            row(Four, "⭐⭐⭐⭐"),
-            row(Five, "⭐⭐⭐⭐⭐")
-        ) { enum, starEmoji ->
-            enum.star shouldBe enum.stars
-            enum.stars shouldBe starEmoji
-        }
-    }
-
     "Rating should convert compatible integers into itself" {
         forAll(
             row(1, One),

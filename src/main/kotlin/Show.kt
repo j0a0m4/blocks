@@ -17,7 +17,21 @@ data class Show(
             var start: LocalDate = LocalDate.MIN,
             var end: LocalDate? = null,
             var favorite: Boolean = false,
-            var rating: Rating? = null,
-        )
+            var rating: Rating? = null
+        ) {
+            val Started = this
+            val Rate = this
+
+            infix fun on(d: LocalDate) {
+                start = d
+            }
+
+            infix fun it(emoji: StarEmoji) = Rating[emoji].let {
+                rating = it
+                if (it.value > 3) {
+                    favorite = true
+                }
+            }
+        }
     }
 }

@@ -1,4 +1,3 @@
-import Rating.*
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
@@ -10,22 +9,19 @@ class WatchListTest : StringSpec({
         watchList {
             show {
                 title = "Doctor Who"
-                start = LocalDate.of(2005, Month.MARCH, 26)
-                favorite = true
-                rating = Five
+                Rate it "⭐⭐⭐⭐⭐"
+                Started on LocalDate.of(2005, Month.MARCH, 26)
             }
             show {
                 title = "The Mentalist"
-                start = LocalDate.of(2008, Month.SEPTEMBER, 23)
+                Rate it "⭐⭐⭐⭐"
+                Started on LocalDate.of(2008, Month.SEPTEMBER, 23)
                 end = LocalDate.of(2015, Month.FEBRUARY, 18)
-                favorite = true
-                rating = Four
             }
             show {
                 title = "Grey's Anatomy"
-                start = LocalDate.of(2005, Month.MARCH, 27)
-                favorite = false
-                rating = Three
+                Started on LocalDate.of(2005, Month.MARCH, 27)
+                Rate it "⭐⭐⭐"
             }
         }.run {
             isNullOrEmpty() shouldBe false
@@ -34,7 +30,7 @@ class WatchListTest : StringSpec({
                 .run {
                     start shouldBe LocalDate.of(2005, Month.MARCH, 26)
                     favorite shouldBe true
-                    rating shouldBe Rating["⭐⭐⭐⭐⭐"]
+                    rating shouldBe Rating[5]
                     hasEnded shouldBe false
                 }
             first { it.title == "The Mentalist" }
@@ -42,14 +38,14 @@ class WatchListTest : StringSpec({
                     start shouldBe LocalDate.of(2008, Month.SEPTEMBER, 23)
                     end shouldBe LocalDate.of(2015, Month.FEBRUARY, 18)
                     favorite shouldBe true
-                    rating shouldBe Rating["⭐⭐⭐⭐"]
+                    rating shouldBe Rating[4]
                     hasEnded shouldBe true
                 }
             first { it.title == "Grey's Anatomy" }
                 .run {
                     start shouldBe LocalDate.of(2005, Month.MARCH, 27)
                     favorite shouldBe false
-                    rating shouldBe Rating["⭐⭐⭐"]
+                    rating shouldBe Rating[3]
                     hasEnded shouldBe false
                 }
         }
