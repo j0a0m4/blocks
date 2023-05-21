@@ -1,4 +1,3 @@
-import Show.Companion.Builder
 import java.time.LocalDate
 
 data class Show(
@@ -13,27 +12,12 @@ data class Show(
     constructor(b: Builder) : this(b.title, b.start, b.end, b.favorite, b.rating)
 
     companion object {
-        interface Builder {
-            var title: String
-            var start: LocalDate
-            var end: LocalDate?
-            var favorite: Boolean
-            var rating: Rating?
-        }
+        data class Builder(
+            var title: String = "",
+            var start: LocalDate = LocalDate.MIN,
+            var end: LocalDate? = null,
+            var favorite: Boolean = false,
+            var rating: Rating? = null,
+        )
     }
-
-    infix operator fun plus(aShow: Show): List<Show> =
-        listOf(this, aShow)
-
-    operator fun unaryPlus(): Show = this
 }
-
-fun show(init: Builder.() -> Unit): Show =
-    object : Builder {
-        override var title: String = ""
-        override var start: LocalDate = LocalDate.MIN
-        override var end: LocalDate? = null
-        override var favorite: Boolean = false
-        override var rating: Rating? = null
-    }.apply(init)
-        .run(::Show)
