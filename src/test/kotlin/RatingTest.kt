@@ -8,45 +8,58 @@ import io.kotest.matchers.shouldBe
 class RatingTest : StringSpec({
     "Rating should add compatible ratings" {
         forAll(
-            row(ONE_STAR, ONE_STAR, TWO_STARS),
-            row(ONE_STAR, TWO_STARS, THREE_STARS),
-            row(ONE_STAR, THREE_STARS, FOUR_STARS),
-            row(ONE_STAR, FOUR_STARS, FIVE_STARS),
-            row(TWO_STARS, TWO_STARS, FOUR_STARS),
-            row(TWO_STARS, THREE_STARS, FIVE_STARS)
+            row(One, One, Two),
+            row(One, Two, Three),
+            row(One, Three, Four),
+            row(One, Four, Five),
+            row(Two, Two, Four),
+            row(Two, Three, Five)
         ) { x, y, result -> x + y shouldBe result }
     }
 
     "Rating should not add incompatible ratings and throw error" {
         forAll(
-            row(TWO_STARS, FOUR_STARS),
-            row(TWO_STARS, FIVE_STARS),
-            row(THREE_STARS, THREE_STARS),
-            row(THREE_STARS, FOUR_STARS),
-            row(THREE_STARS, FIVE_STARS),
-            row(FOUR_STARS, FOUR_STARS),
-            row(FOUR_STARS, FIVE_STARS),
-            row(FIVE_STARS, FIVE_STARS)
+            row(Two, Four),
+            row(Two, Five),
+            row(Three, Three),
+            row(Three, Four),
+            row(Three, Five),
+            row(Four, Four),
+            row(Four, Five),
+            row(Five, Five)
         ) { x, y -> shouldThrow<UnsupportedOperationException> { x + y } }
     }
 
     "Rating should show correct number of stars emoji" {
         forAll(
-            row(ONE_STAR, "⭐"),
-            row(TWO_STARS, "⭐⭐"),
-            row(THREE_STARS, "⭐⭐⭐"),
-            row(FOUR_STARS, "⭐⭐⭐⭐"),
-            row(FIVE_STARS, "⭐⭐⭐⭐⭐")
-        ) { enum, starEmoji -> enum.toString() shouldBe starEmoji }
+            row(One, "⭐"),
+            row(Two, "⭐⭐"),
+            row(Three, "⭐⭐⭐"),
+            row(Four, "⭐⭐⭐⭐"),
+            row(Five, "⭐⭐⭐⭐⭐")
+        ) { enum, starEmoji ->
+            enum.star shouldBe enum.stars
+            enum.stars shouldBe starEmoji
+        }
     }
 
     "Rating should convert compatible integers into itself" {
         forAll(
-            row(1, ONE_STAR),
-            row(2, TWO_STARS),
-            row(3, THREE_STARS),
-            row(4, FOUR_STARS),
-            row(5, FIVE_STARS)
-        ) { num, ratingEnum -> Rating of num shouldBe ratingEnum }
+            row(1, One),
+            row(2, Two),
+            row(3, Three),
+            row(4, Four),
+            row(5, Five)
+        ) { num, rating -> Rating[num] shouldBe rating }
+    }
+
+    "Rating should convert compatible strings into itself" {
+        forAll(
+            row("⭐", One),
+            row("⭐⭐", Two),
+            row("⭐⭐⭐", Three),
+            row("⭐⭐⭐⭐", Four),
+            row("⭐⭐⭐⭐⭐", Five)
+        ) { emoji, rating -> Rating[emoji] shouldBe rating }
     }
 })

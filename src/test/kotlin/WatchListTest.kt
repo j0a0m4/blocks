@@ -13,18 +13,18 @@ class WatchListTest : StringSpec({
                 title = "Doctor Who"
                 start = LocalDate.of(2005, Month.MARCH, 26)
                 favorite = true
-                rating = FIVE_STARS
+                rating = Five
             } + show {
                 title = "The Mentalist"
                 start = LocalDate.of(2008, Month.SEPTEMBER, 23)
                 end = LocalDate.of(2015, Month.FEBRUARY, 18)
                 favorite = true
-                rating = FOUR_STARS
+                rating = Four
             } + show {
                 title = "Grey's Anatomy"
                 start = LocalDate.of(2005, Month.MARCH, 27)
                 favorite = false
-                rating = THREE_STARS
+                rating = Three
             }
         }.run {
             isNullOrEmpty() shouldBe false
@@ -41,12 +41,12 @@ class WatchListTest : StringSpec({
                 title = "Billions"
                 start = LocalDate.of(2016, Month.JANUARY, 17)
                 favorite = true
-                rating = FIVE_STARS
+                rating = Five
             } + show {
                 title = "Jane the Virgin"
                 start = LocalDate.of(2014, Month.OCTOBER, 13)
                 end = LocalDate.of(2019, Month.JULY, 31)
-                rating = TWO_STARS
+                rating = Two
             }
         }.run {
             isNullOrEmpty() shouldBe false
