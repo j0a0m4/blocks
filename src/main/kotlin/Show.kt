@@ -9,18 +9,19 @@ data class Show(
 ) {
     val hasEnded = end != null
 
-    constructor(b: Builder) : this(b.title, b.start, b.end, b.favorite, b.rating)
+    constructor(b: Builder) : this(b.title, b.start ?: throw IllegalArgumentException(), b.end, b.favorite, b.rating)
 
     companion object {
         data class Builder(
             var title: String = "",
-            var start: LocalDate = LocalDate.MIN,
+            var start: LocalDate? = null,
             var end: LocalDate? = null,
             var favorite: Boolean = false,
             var rating: Rating? = null
         ) {
-            val started = On { DateFactory(it) { date -> start = date } }
-            val ended = On { DateFactory(it) { date -> end = date } }
+
+            val started = LocalDatePicker { start = it }
+            val ended = LocalDatePicker { end = it }
 
             val rate = this
             infix fun it(emoji: StarEmoji) = Rating[emoji].let {
