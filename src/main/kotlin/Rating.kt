@@ -8,6 +8,9 @@ enum class Rating(val value: Int, val stars: StarEmoji) {
     Five(5, "⭐⭐⭐⭐⭐"),
     ;
 
+    val isFavorite: Boolean
+        get() = value > 3
+
     infix operator fun plus(increment: Rating) =
         try {
             Rating[value + increment.value]

@@ -9,29 +9,31 @@ data class Show(
 ) {
     val hasEnded = end != null
 
-    constructor(b: Builder) : this(b.title, b.start ?: throw IllegalArgumentException(), b.end, b.favorite, b.rating)
+    constructor(builder: Builder) : this(
+        builder.title ?: throw IllegalArgumentException("Title is mandatory field"),
+        builder.start ?: throw IllegalArgumentException("Start is mandatory field"),
+        builder.end,
+        builder.favorite,
+        builder.rating
+    )
 
     companion object {
         data class Builder(
-            var title: String = "",
+            var title: String? = null,
             var start: LocalDate? = null,
             var end: LocalDate? = null,
             var favorite: Boolean = false,
             var rating: Rating? = null
         ) {
-
             val started = LocalDatePicker { start = it }
             val ended = LocalDatePicker { end = it }
 
             val rate = this
             infix fun it(emoji: StarEmoji) = Rating[emoji].let {
                 rating = it
-                if (it.value > 3) {
-                    favorite = true
-                }
+                favorite = it.isFavorite
             }
         }
     }
 }
-
 

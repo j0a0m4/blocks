@@ -1,12 +1,13 @@
-import Show.Companion.Builder
+import Show.Companion.Builder as ShowBuilder
 
-typealias WatchList = List<Show>
-typealias MutableWatchList = MutableList<Show>
+class WatchList : ArrayList<Show>() {
+    fun show(block: ShowBuilder.() -> Unit): Show =
+        ShowBuilder()
+            .apply(block)
+            .run(::Show)
+            .also(::add)
+}
 
-fun MutableWatchList.show(block: Builder.() -> Unit): Show =
-    Builder().apply(block)
-        .run(::Show)
-        .also(::add)
 
-fun watchList(block: MutableWatchList.() -> Unit): WatchList =
-    mutableListOf<Show>().apply(block).toList()
+fun watchList(block: WatchList.() -> Unit): List<Show> =
+    WatchList().apply(block).toList()
