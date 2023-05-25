@@ -1,7 +1,9 @@
+import ShowDsl.Name
+import ShowDsl.Rate
 import java.time.LocalDate
 
 data class Show(
-    val title: String,
+    val name: String,
     val start: LocalDate,
     val end: LocalDate? = null,
     val favorite: Boolean = false,
@@ -9,31 +11,48 @@ data class Show(
 ) {
     val hasEnded = end != null
 
-    constructor(builder: Builder) : this(
-        builder.title ?: throw IllegalArgumentException("Title is mandatory field"),
-        builder.start ?: throw IllegalArgumentException("Start is mandatory field"),
-        builder.end,
-        builder.favorite,
-        builder.rating
+    constructor(b: Builder) : this(
+        b.title ?: throw IllegalArgumentException("Title is mandatory field"),
+        b.start ?: throw IllegalArgumentException("Start is mandatory field"),
+        b.end,
+        b.rating?.isFavorite ?: false,
+        b.rating
     )
 
-    companion object {
-        data class Builder(
-            var title: String? = null,
-            var start: LocalDate? = null,
-            var end: LocalDate? = null,
-            var favorite: Boolean = false,
-            var rating: Rating? = null
-        ) {
-            val started = LocalDatePicker { start = it }
-            val ended = LocalDatePicker { end = it }
-
-            val rate = this
-            infix fun it(emoji: StarEmoji) = Rating[emoji].let {
-                rating = it
-                favorite = it.isFavorite
-            }
-        }
+    interface Builder {
+        var title: String?
+        var start: LocalDate?
+        var end: LocalDate?
+        var rating: Rating?
     }
 }
 
+interface ShowDsl {
+    val started: LocalDatePicker
+    val ended: LocalDatePicker
+
+    val name: Name
+
+    fun interface Name {
+        infix fun of(name: String)
+    }
+
+    val rate: Rate
+
+    fun interface Rate {
+        infix fun it(emoji: StarEmoji)
+    }
+}
+
+class ShowDslBuilder : ShowDsl {
+    val builder: Show.Builder = object : Show.Builder {
+        override var title: String? = null
+        override var start: LocalDate? = null
+        override var end: LocalDate? = null
+        override var rating: Rating? = null
+    }
+    override val started = LocalDatePicker { builder.start = it }
+    override val ended = LocalDatePicker { builder.end = it }
+    override val name = Name { builder.title = it }
+    override val rate = Rate { builder.rating = Rating[it] }
+}

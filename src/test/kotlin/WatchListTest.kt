@@ -8,32 +8,32 @@ class WatchListTest : StringSpec({
     "WatchList should create read only list of shows" {
         watchList {
             show {
-                title = "Doctor Who"
+                name of "Doctor Who"
                 started on 26 March 2005
                 rate it "⭐⭐⭐⭐⭐"
             }
             show {
-                title = "The Mentalist"
+                name of "The Mentalist"
                 started on 23 September 2008
                 ended on 18 February 2015
                 rate it "⭐⭐⭐⭐"
             }
             show {
-                title = "Grey's Anatomy"
+                name of "Grey's Anatomy"
                 started on 27 March 2005
                 rate it "⭐⭐⭐"
             }
         }.run {
             isNullOrEmpty() shouldBe false
             size shouldBe 3
-            first { it.title == "Doctor Who" }
+            first { it.name == "Doctor Who" }
                 .run {
                     start shouldBe LocalDate.of(2005, MARCH, 26)
                     favorite shouldBe true
                     rating shouldBe Rating[5]
                     hasEnded shouldBe false
                 }
-            first { it.title == "The Mentalist" }
+            first { it.name == "The Mentalist" }
                 .run {
                     start shouldBe LocalDate.of(2008, SEPTEMBER, 23)
                     end shouldBe LocalDate.of(2015, FEBRUARY, 18)
@@ -41,7 +41,7 @@ class WatchListTest : StringSpec({
                     rating shouldBe Rating[4]
                     hasEnded shouldBe true
                 }
-            first { it.title == "Grey's Anatomy" }
+            first { it.name == "Grey's Anatomy" }
                 .run {
                     start shouldBe LocalDate.of(2005, MARCH, 27)
                     favorite shouldBe false
