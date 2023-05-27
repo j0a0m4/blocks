@@ -1,15 +1,11 @@
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
-import org.junit.jupiter.api.function.Executable
 import java.time.Month
 import java.time.Month.*
 import kotlin.reflect.KFunction1
 
 internal typealias MonthScheduler = KFunction1<Int, Unit>
-
-internal infix fun String.dynamicTest(executable: Executable): DynamicTest =
-	DynamicTest.dynamicTest(this, executable)
 
 class SchedulerTest {
 	@TestFactory
@@ -52,6 +48,6 @@ class SchedulerTest {
 
 	private fun toDynamicTest(entry: Map.Entry<YearMonthKey, MonthScheduler>): DynamicTest =
 		entry.let { (key, setMonthWith) ->
-			"Month: ${key.month}, Year: ${key.year}" dynamicTest { setMonthWith(key.year) }
+			"Month: ${key.month}, Year: ${key.year}" { setMonthWith(key.year) }
 		}
 }
