@@ -16,3 +16,6 @@ class MonthRange(private val range: IntProgression = (1..12)) : Iterable<Month>,
 
 val IntProgression.month: MonthRange
 	get() = MonthRange(this)
+
+infix operator fun Month.rangeTo(endInclusive: Month) =
+	MonthRange(this, endInclusive)
