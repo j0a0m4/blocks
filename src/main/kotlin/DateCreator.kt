@@ -11,10 +11,7 @@ fun interface LocalDatePicker {
 
 fun interface Scheduler {
     fun schedule(month: Int, year: Int)
-    private infix fun Month.of(year: Int) {
-        schedule(value, year)
-    }
-
+    private infix fun Month.of(year: Int) = schedule(value, year)
     infix fun January(year: Int) = JANUARY of year
     infix fun February(year: Int) = FEBRUARY of year
     infix fun March(year: Int) = MARCH of year

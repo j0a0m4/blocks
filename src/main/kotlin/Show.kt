@@ -54,7 +54,6 @@ class ShowDslBuilder : ShowDsl, Builder<Show> {
     }
 
     override fun build() = builder.build()
-
     override val started = LocalDatePicker { builder.start = it }
     override val ended = LocalDatePicker { builder.end = it }
     override val name = Name { builder.name = it }
