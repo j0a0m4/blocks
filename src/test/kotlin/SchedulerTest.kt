@@ -14,9 +14,9 @@ internal infix fun String.dynamicTest(executable: Executable): DynamicTest =
 class SchedulerTest {
 	@TestFactory
 	fun `Should schedule on every month`() =
-		(1900..2100).associateWith { MonthRange() }
+		(1994..2014).associateWith { (1..12).month }
 			.flatMap(::toYearMonthKey)
-			.associateWith(TestAssertions::scheduler)
+			.associateWith(::schedulerAssertions)
 			.mapValues(::toMonthScheduler)
 			.map(::toDynamicTest)
 
@@ -27,11 +27,9 @@ class SchedulerTest {
 	private fun toYearMonthKey(entry: Map.Entry<Int, MonthRange>): List<YearMonthKey> =
 		entry.let { (year, months) -> months.map { year to it } }
 
-	object TestAssertions {
-		fun scheduler(expected: YearMonthKey) = Scheduler { month, year ->
-			month shouldBe expected.month.value
-			year shouldBe expected.year
-		}
+	private fun schedulerAssertions(expected: YearMonthKey) = Scheduler { month, year ->
+		month shouldBe expected.month.value
+		year shouldBe expected.year
 	}
 
 	private infix fun Scheduler.of(month: Month): MonthScheduler = when (month) {
