@@ -5,14 +5,14 @@ import java.time.Month.*
 class MonthRangeTest : BehaviorSpec({
 	Given("a start month and an end month") {
 		When("I directly create a month range from it") {
-			Then("it should contain expected months") {
-				MonthRange(MARCH, JUNE).run {
-					this shouldContainExactly setOf(MARCH, APRIL, MAY, JUNE)
+			And("I write them as enums") {
+				Then("it should contain expected months") {
+					MonthRange(MARCH, JUNE).run {
+						this shouldContainExactly setOf(MARCH, APRIL, MAY, JUNE)
+					}
 				}
 			}
-		}
-		And("I write them as strings") {
-			When("I directly create a month range from it") {
+			And("I write them as strings") {
 				Then("it should contain expected months") {
 					MonthRange("September", "November").run {
 						this shouldContainExactly setOf(SEPTEMBER, OCTOBER, NOVEMBER)
