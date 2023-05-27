@@ -1,17 +1,18 @@
 import java.time.Month
 
-class MonthRange(private val range: IntRange = (1..12)) : Iterable<Month> {
+class MonthRange(private val range: IntProgression = (1..12)) : Iterable<Month>, ClosedRange<Month> {
+	override val endInclusive: Month = Month.of(range.last)
+	override val start: Month = Month.of(range.first)
 
 	constructor(start: Month, endInclusive: Month) : this(start.value..endInclusive.value)
 
-	constructor(start: Int, endInclusive: Int) : this(start..endInclusive)
-
 	constructor(start: String, endInclusive: String) : this(
-		Month.valueOf(start).value..Month.valueOf(endInclusive).value
+		Month.valueOf(start.uppercase()),
+		Month.valueOf(endInclusive.uppercase())
 	)
 
 	override fun iterator() = range.map(Month::of).iterator()
 }
 
-val IntRange.month: MonthRange
+val IntProgression.month: MonthRange
 	get() = MonthRange(this)
