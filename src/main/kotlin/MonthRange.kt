@@ -12,3 +12,6 @@ class MonthRange(private val range: IntRange = (1..12)) : Iterable<Month> {
 
 	override fun iterator() = range.map(Month::of).iterator()
 }
+
+val IntRange.month: MonthRange
+	get() = MonthRange(this)
