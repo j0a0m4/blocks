@@ -1,4 +1,3 @@
-import Show.ShowBuilder
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
@@ -7,7 +6,7 @@ import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
 
 class ShowTest : StringSpec({
-	"Should throw when builder provides null value for required fields" {
+	"Should throw when builder provides null values for required fields" {
 		forAll(
 			row(object : ShowBuilder() {
 				init {
@@ -20,7 +19,17 @@ class ShowTest : StringSpec({
 				}
 			}),
 			row(object : ShowBuilder() {})
-		) { assertThrows<RequiredField> { Show(it) } }
+		) { assertThrows<RequiredField> { it.build() } }
+	}
+
+	"Should throw when title is empty" {
+		assertThrows<RequiredField> {
+			object : ShowBuilder() {
+				init {
+					title = ""
+				}
+			}
+		}
 	}
 
 	"Should not throw when builder provides values for required fields" {
@@ -46,6 +55,6 @@ class ShowTest : StringSpec({
 					rating = Rating[3]
 				}
 			})
-		) { assertDoesNotThrow { Show(it) } }
+		) { assertDoesNotThrow { it.build() } }
 	}
 })

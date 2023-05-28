@@ -1,4 +1,3 @@
-import Show.ShowBuilder
 import ShowDsl.Name
 import ShowDsl.Rate
 import java.time.LocalDate
@@ -9,23 +8,26 @@ data class Show(
 	val end: LocalDate? = null,
 	val rating: Rating? = null
 ) {
-	constructor(b: ShowBuilder) : this(
-		b.title ?: throw RequiredField of "name",
-		b.start ?: throw RequiredField of "start",
-		b.end,
-		b.rating
-	)
-
-	abstract class ShowBuilder : Builder<Show> {
-		var title: String? = null
-		var start: LocalDate? = null
-		var end: LocalDate? = null
-		var rating: Rating? = null
-		override fun build() = Show(this)
-	}
-
 	val favorite: Boolean = rating?.isFavorite ?: false
 	val hasEnded = end != null
+}
+
+abstract class ShowBuilder : Builder<Show> {
+	protected var title: String? = null
+		set(value) = when (value.isNullOrBlank()) {
+			true -> throw RequiredField of "name"
+			else -> field = value
+		}
+	protected var start: LocalDate? = null
+	protected var end: LocalDate? = null
+	protected var rating: Rating? = null
+
+	override fun build() = Show(
+		name = title ?: throw RequiredField of "name",
+		start = start ?: throw RequiredField of "start",
+		end = end,
+		rating = rating
+	)
 }
 
 interface ShowDsl {
