@@ -9,20 +9,14 @@ typealias Command = () -> String
 
 fun shell(
 	workingDir: String = ".",
-	timeout: Duration = 60.toDuration(MINUTES),
+	timeout: Duration = 1.toDuration(MINUTES),
 	command: Command
 ) =
 	command.runWith(workingDir.file, timeout)
 
-private val String.file: File
-	get() = File(this)
-
-val Command.parse: List<String>
-	get() = "\\s".toRegex().split(invoke())
-
 fun Command.runWith(
 	workingDir: File = File("."),
-	timeout: Duration = 60.toDuration(MINUTES)
+	timeout: Duration = 1.toDuration(MINUTES)
 ) =
 	ProcessBuilder(parse).runCatching {
 		directory(workingDir)
@@ -32,6 +26,12 @@ fun Command.runWith(
 		start().also { it waits timeout }
 			.inputStream.bufferedReader().readText()
 	}
+
+private val String.file: File
+	get() = File(this)
+
+private val Command.parse: List<String>
+	get() = "\\s".toRegex().split(invoke())
 
 private infix fun Process.waits(timeout: Duration) =
 	waitFor(timeout.inWholeMilliseconds, MILLISECONDS)
