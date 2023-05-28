@@ -1,3 +1,3 @@
 
-rootProject.name = "tv-shows"
+rootProject.name = "blocks"
 
