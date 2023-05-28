@@ -15,7 +15,7 @@ fun shell(
 	command.runWith(workingDir.file, timeout)
 
 fun Command.runWith(
-	workingDir: File = File("."),
+	workingDir: File = ".".file,
 	timeout: Duration = 1.toDuration(MINUTES)
 ) =
 	ProcessBuilder(parse).runCatching {
