@@ -3,8 +3,6 @@ import Collections.setBuilderOf
 import io.kotest.core.spec.style.FeatureSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.*
-import kotlin.test.assertTrue
 
 class CollectionsBuilderTest : FeatureSpec({
 	feature("Set builder") {
