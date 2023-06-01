@@ -11,7 +11,7 @@ class BlockTest : BehaviorSpec({
 					it turns right
 					it runs slow
 				}.run {
-					memory shouldContainExactly setOf(
+					this shouldContainExactly setOf(
 						"Robot turns Left", "Robot runs Fast",
 						"Robot turns Right", "Robot runs Slow"
 					)
