@@ -1,10 +1,11 @@
 fun interface Processor<R, C, M> {
-	fun EngineDsl<R, C, M>.engine()
-	infix operator fun invoke(block: R.(C) -> Unit): Collection<M> =
-		EngineDslBuilder<R, C, M>()
-			.apply { engine() }
+	fun ConfigBlock<R, C, M>.configuration()
+
+	infix operator fun invoke(instructions: R.(C) -> Unit): Collection<M> =
+		ConfigBlockBuilder<R, C, M>()
+			.apply { configuration() }
 			.build()
-			.apply { receiver.block(controller) }
+			.apply { receiver.instructions(controller) }
 			.memory
 }
 
@@ -20,52 +21,46 @@ fun interface Dispatcher<T> {
 	infix fun dispatch(event: T)
 }
 
-interface EngineDsl<R, C, M> : Dispatcher<Any> {
-	infix fun receiver(block: Supplier<R>)
-	infix fun controller(block: Supplier<C>)
-	infix fun dispatcher(block: Mapper<Any, M>)
-}
-
-data class Engine<R, C, M>(
+data class Config<R, C, M>(
 	val receiver: R,
 	val controller: C,
 	val memory: Collection<M>
 )
 
-abstract class EngineBuilder<R, C, M> : Builder<Engine<R, C, M>> {
+abstract class ConfigBuilder<R, C, M> : Builder<Config<R, C, M>> {
 	protected var receiver: R? = null
 	protected var controller: C? = null
 	protected var action: Mapper<Any, M>? = null
-	private val memory: MutableSet<M> = mutableSetOf()
+	protected val memory = mutableListOf<M>()
 
-	fun accept(event: Any) {
-		action
-			?.map(event)
-			?.let(memory::add)
-	}
-
-	override fun build(): Engine<R, C, M> =
-		Engine(
+	override fun build(): Config<R, C, M> =
+		Config(
 			receiver ?: throw RequiredField of "receiver",
 			controller ?: throw RequiredField of "controller",
 			memory.takeIf { it.isEmpty() } ?: throw RequiredField of "memory"
 		)
 }
 
-class EngineDslBuilder<R, C, M> : EngineDsl<R, C, M>, EngineBuilder<R, C, M>() {
+interface ConfigBlock<R, C, M> : Dispatcher<Any> {
+	infix fun receiver(block: Supplier<R>)
+	infix fun controller(block: Supplier<C>)
+	infix fun dispatcher(block: Mapper<Any, M>)
+}
+
+class ConfigBlockBuilder<R, C, M> : ConfigBlock<R, C, M>, ConfigBuilder<R, C, M>() {
 	override fun dispatch(event: Any) {
-		super.accept(event)
+		action?.map(event)?.let(memory::add)
 	}
 
 	override fun dispatcher(block: Mapper<Any, M>) {
-		super.action = block
+		action = block
 	}
 
 	override fun receiver(block: Supplier<R>) {
-		super.receiver = block.invoke()
+		receiver = block.invoke()
 	}
 
 	override fun controller(block: Supplier<C>) {
-		super.controller = block.invoke()
+		controller = block.invoke()
 	}
 }
