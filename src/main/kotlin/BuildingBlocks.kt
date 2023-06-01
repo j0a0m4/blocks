@@ -9,16 +9,16 @@ fun interface Processor<R, C, M> {
 			.memory
 }
 
-fun interface Supplier<T> {
-	operator fun invoke(): T
-}
-
 fun interface Mapper<I, O> {
 	infix fun map(input: I): O
 }
 
 fun interface Dispatcher<T> {
 	infix fun dispatch(event: T)
+}
+
+fun interface ControllerBinder {
+	infix fun eventDispatcher(event: Any)
 }
 
 data class Config<R, C, M>(
@@ -30,7 +30,7 @@ data class Config<R, C, M>(
 abstract class ConfigBuilder<R, C, M> : Builder<Config<R, C, M>> {
 	protected var receiver: R? = null
 	protected var controller: C? = null
-	protected var action: Mapper<Any, M>? = null
+	protected var dispatcher: Mapper<Any, M>? = null
 	protected val memory = mutableListOf<M>()
 
 	override fun build(): Config<R, C, M> =
@@ -41,26 +41,28 @@ abstract class ConfigBuilder<R, C, M> : Builder<Config<R, C, M>> {
 		)
 }
 
-interface ConfigBlock<R, C, M> : Dispatcher<Any> {
-	infix fun receiver(block: Supplier<R>)
-	infix fun controller(block: Supplier<C>)
-	infix fun dispatcher(block: Mapper<Any, M>)
+interface ConfigBlock<R, C, M> {
+	val bind: ConfigBlock<R, C, M>
+		get() = this
+	val route: String
+		get() = ""
+
+	infix fun bindings(controllerBinder: ControllerBinder.() -> C)
+	infix fun receiver(receiver: R)
+	infix fun dispatcher(mapper: Mapper<Any, M>)
 }
 
 class ConfigBlockBuilder<R, C, M> : ConfigBlock<R, C, M>, ConfigBuilder<R, C, M>() {
-	override fun dispatch(event: Any) {
-		action?.map(event)?.let(memory::add)
+	override fun dispatcher(mapper: Mapper<Any, M>) {
+		dispatcher = mapper
 	}
 
-	override fun dispatcher(block: Mapper<Any, M>) {
-		action = block
+	override fun receiver(receiver: R) {
+		this.receiver = receiver
 	}
-
-	override fun receiver(block: Supplier<R>) {
-		receiver = block.invoke()
-	}
-
-	override fun controller(block: Supplier<C>) {
-		controller = block.invoke()
+	override fun bindings(controllerBinder: ControllerBinder.() -> C) {
+		controller = controllerBinder {
+			dispatcher?.map(it)?.let(memory::add)
+		}
 	}
 }
