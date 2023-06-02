@@ -1,5 +1,6 @@
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.throwable.shouldHaveMessage
 import org.junit.jupiter.api.assertThrows
 
 enum class Direction : Command { Left, Right; }
@@ -16,6 +17,8 @@ fun interface RobotOperations : Dispatcher {
 	infix fun turns(direction: Direction) = dispatches(direction)
 	infix fun runs(speed: Speed) = dispatches(speed)
 }
+
+enum class FakeCommand : Command { Unsupported }
 
 class BlockTest : BehaviorSpec({
 	Given("A BlockBuilder with binder and mapper configured") {
@@ -52,8 +55,8 @@ class BlockTest : BehaviorSpec({
 		When("the user send commands that are not supported") {
 			Then("it should return a UnsupportedCommand exception") {
 				assertThrows<UnsupportedCommand> {
-					Robot { it dispatches object : Command {} }
-				}
+					Robot { it dispatches FakeCommand.Unsupported }
+				}.shouldHaveMessage("Unsupported of class FakeCommand doesn't have any mappings")
 			}
 		}
 	}
