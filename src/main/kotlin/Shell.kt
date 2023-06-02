@@ -5,16 +5,16 @@ import kotlin.time.Duration
 import kotlin.time.DurationUnit.MINUTES
 import kotlin.time.toDuration
 
-typealias Command = () -> String
+typealias ShellCommand = () -> String
 
 fun shell(
 	workingDir: String = ".",
 	timeout: Duration = 1.toDuration(MINUTES),
-	command: Command
+	shellCommand: ShellCommand
 ) =
-	command.runWith(workingDir.file, timeout)
+	shellCommand.runWith(workingDir.file, timeout)
 
-fun Command.runWith(
+fun ShellCommand.runWith(
 	workingDir: File = ".".file,
 	timeout: Duration = 1.toDuration(MINUTES)
 ) =
@@ -30,7 +30,7 @@ fun Command.runWith(
 private val String.file: File
 	get() = File(this)
 
-private val Command.parse: List<String>
+private val ShellCommand.parse: List<String>
 	get() = "\\s".toRegex().split(invoke())
 
 private infix fun Process.waits(timeout: Duration) =
