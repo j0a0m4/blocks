@@ -1,3 +1,5 @@
+package io.blocks.examples.shell
+
 import java.io.File
 import java.lang.ProcessBuilder.Redirect.PIPE
 import java.util.concurrent.TimeUnit.MILLISECONDS

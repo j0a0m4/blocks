@@ -1,3 +1,5 @@
+package io.blocks.examples.watchlist
+
 typealias WatchList = ArrayList<Show>
 
 fun WatchList.show(block: ShowDsl.() -> Unit): Show =

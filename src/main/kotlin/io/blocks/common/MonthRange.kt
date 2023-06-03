@@ -1,3 +1,5 @@
+package io.blocks.common
+
 import java.time.Month
 
 class MonthRange(private val range: IntProgression = (1..12)) : Iterable<Month>, ClosedRange<Month> {

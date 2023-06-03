@@ -1,8 +1,11 @@
+import io.blocks.common.RequiredField
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import io.blocks.examples.watchlist.Rating
+import io.blocks.examples.watchlist.ShowBuilder
 import java.time.LocalDate
 
 class ShowTest : StringSpec({

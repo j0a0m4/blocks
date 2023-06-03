@@ -1,3 +1,5 @@
+import io.blocks.common.*
+import io.blocks.core.blockbuilder.BlockBuilder
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.throwable.shouldHaveMessage
@@ -13,7 +15,7 @@ object RobotCommands {
 	val slow = Speed.Slow
 }
 
-fun interface RobotOperations : Dispatcher {
+fun interface RobotOperations : Dispatcher<Command> {
 	infix fun turns(direction: Direction) = dispatch(direction)
 	infix fun runs(speed: Speed) = dispatch(speed)
 }

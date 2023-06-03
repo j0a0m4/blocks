@@ -1,12 +1,13 @@
-import Rating.*
+import io.blocks.examples.watchlist.Rating.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
+import io.blocks.examples.watchlist.Rating
 
 class RatingTest : StringSpec({
-    "Rating should add compatible ratings" {
+    "watchlist.watchlist.Rating should add compatible ratings" {
         forAll(
             row(One, One, Two),
             row(One, Two, Three),
@@ -17,7 +18,7 @@ class RatingTest : StringSpec({
         ) { x, y, result -> x + y shouldBe result }
     }
 
-    "Rating should not add incompatible ratings and throw error" {
+    "watchlist.watchlist.Rating should not add incompatible ratings and throw error" {
         forAll(
             row(Two, Four),
             row(Two, Five),
@@ -30,7 +31,7 @@ class RatingTest : StringSpec({
         ) { x, y -> shouldThrow<UnsupportedOperationException> { x + y } }
     }
 
-    "Rating should convert compatible integers into itself" {
+    "watchlist.watchlist.Rating should convert compatible integers into itself" {
         forAll(
             row(1, One),
             row(2, Two),
@@ -40,7 +41,7 @@ class RatingTest : StringSpec({
         ) { num, rating -> Rating[num] shouldBe rating }
     }
 
-    "Rating should convert compatible strings into itself" {
+    "watchlist.watchlist.Rating should convert compatible strings into itself" {
         forAll(
             row("⭐", One),
             row("⭐⭐", Two),
