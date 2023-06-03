@@ -11,12 +11,12 @@ fun interface BlockBuilder<C, O, M> {
 
 interface Command
 
-fun interface Mapper<C, M> {
-	infix fun map(command: C): M
+fun interface Mapper<M> {
+	infix fun map(command: Command): M
 }
 
 fun interface Dispatcher {
-	infix fun dispatches(command: Command)
+	infix fun dispatch(command: Command)
 }
 
 class UnsupportedCommand(override val message: String?) : Exception() {
@@ -35,7 +35,7 @@ data class Config<C, O, M>(
 abstract class ConfigBuilder<C, O, M> : Builder<Config<C, O, M>> {
 	protected var commands: C? = null
 	protected var operations: O? = null
-	protected var mapper: Mapper<Command, M>? = null
+	protected var mapper: Mapper<M>? = null
 	private val memory = mutableListOf<M>()
 
 	fun addCommandToMemory(command: Command) {
@@ -54,15 +54,15 @@ interface BlockConfig<C, O, M> {
 	val bind: BlockConfig<C, O, M>
 		get() = this
 
-	infix fun binder(dispatcher: Dispatcher.() -> Unit)
+	infix fun binder(binder: Dispatcher.() -> Unit)
 	infix fun commands(commands: C)
 	infix fun operations(operations: O)
-	infix fun mapper(mapper: Mapper<Command, M>)
+	infix fun mapper(mapper: Mapper<M>)
 }
 
 class BlockConfigBuilder<C, O, M> : BlockConfig<C, O, M>, ConfigBuilder<C, O, M>() {
-	override fun binder(dispatcher: Dispatcher.() -> Unit) {
-		dispatcher(::addCommandToMemory)
+	override fun binder(binder: Dispatcher.() -> Unit) {
+		binder(::addCommandToMemory)
 	}
 
 	override fun commands(commands: C) {
@@ -73,7 +73,7 @@ class BlockConfigBuilder<C, O, M> : BlockConfig<C, O, M>, ConfigBuilder<C, O, M>
 		super.operations = operations
 	}
 
-	override fun mapper(mapper: Mapper<Command, M>) {
+	override fun mapper(mapper: Mapper<M>) {
 		super.mapper = mapper
 	}
 }

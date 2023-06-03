@@ -14,18 +14,18 @@ object RobotCommands {
 }
 
 fun interface RobotOperations : Dispatcher {
-	infix fun turns(direction: Direction) = dispatches(direction)
-	infix fun runs(speed: Speed) = dispatches(speed)
+	infix fun turns(direction: Direction) = dispatch(direction)
+	infix fun runs(speed: Speed) = dispatch(speed)
 }
 
-enum class FakeCommand : Command { Unsupported }
+enum class Fake : Command { Unsupported }
 
 class BlockTest : BehaviorSpec({
 	Given("A BlockBuilder with binder and mapper configured") {
 		val Robot = BlockBuilder {
 			binder {
 				bind commands RobotCommands
-				bind operations RobotOperations(::dispatches)
+				bind operations RobotOperations(::dispatch)
 			}
 			mapper {
 				when (it) {
@@ -55,8 +55,8 @@ class BlockTest : BehaviorSpec({
 		When("the user send commands that are not supported") {
 			Then("it should return a UnsupportedCommand exception") {
 				assertThrows<UnsupportedCommand> {
-					Robot { it dispatches FakeCommand.Unsupported }
-				}.shouldHaveMessage("Unsupported of class FakeCommand doesn't have any mappings")
+					Robot { it dispatch Fake.Unsupported }
+				}.shouldHaveMessage("Unsupported of class Fake doesn't have any mappings")
 			}
 		}
 	}
