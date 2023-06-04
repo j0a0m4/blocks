@@ -1,9 +1,11 @@
 import io.blocks.common.*
-import io.blocks.core.blockbuilder.BlockBuilder
+import io.blocks.core.dsl.DslBlock
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.throwable.shouldHaveMessage
 import org.junit.jupiter.api.assertThrows
+
+
 
 enum class Direction : Command { Left, Right; }
 enum class Speed : Command { Fast, Slow }
@@ -24,16 +26,17 @@ enum class Fake : Command { Unsupported }
 
 class BlockTest : BehaviorSpec({
 	Given("A BlockBuilder with binder and mapper configured") {
-		val Robot = BlockBuilder {
-			binder {
-				bind commands RobotCommands
-				bind operations RobotOperations(::dispatch)
+		@Suppress("LocalVariableName")
+		val Robot = DslBlock {
+			settings {
+				context of RobotCommands
+				parameter of RobotOperations { command -> toMapping(command) }
 			}
-			mapper {
-				when (it) {
-					is Direction -> "Robot turns $it"
-					is Speed     -> "Robot runs $it"
-					else         -> throw UnsupportedCommand of it
+			mapping { command ->
+				when (command) {
+					is Direction -> "Robot turns $command"
+					is Speed     -> "Robot runs $command"
+					else         -> throw UnsupportedCommand of command
 				}
 			}
 		}
