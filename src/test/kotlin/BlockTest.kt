@@ -1,11 +1,11 @@
-import io.blocks.common.*
 import io.blocks.core.dsl.DslBlock
+import io.blocks.core.exceptions.UnsupportedCommand
+import io.blocks.core.interfaces.*
+import io.blocks.core.*
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.throwable.shouldHaveMessage
 import org.junit.jupiter.api.assertThrows
-
-
 
 enum class Direction : Command { Left, Right; }
 enum class Speed : Command { Fast, Slow }

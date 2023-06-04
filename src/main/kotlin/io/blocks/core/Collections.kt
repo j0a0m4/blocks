@@ -1,4 +1,4 @@
-package io.blocks.common
+package io.blocks.core
 
 object Collections {
 	fun <T> setBuilderOf(mutation: MutableSet<T>.() -> Unit): Set<T> =

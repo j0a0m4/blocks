@@ -1,4 +1,4 @@
-package io.blocks.core.datecreator
+package io.blocks.core.date
 
 import java.time.Month
 

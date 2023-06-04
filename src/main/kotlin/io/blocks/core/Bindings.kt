@@ -1,4 +1,4 @@
-package io.blocks.common
+package io.blocks.core
 
 object Bindings {
 	fun interface Of<T> {

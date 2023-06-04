@@ -1,6 +1,6 @@
-package io.blocks.core.datecreator
+package io.blocks.core.date
 
-import io.blocks.common.Consumer
+import io.blocks.core.interfaces.Consumer
 import java.time.LocalDate
 
 fun interface LocalDatePicker : Consumer<LocalDate> {

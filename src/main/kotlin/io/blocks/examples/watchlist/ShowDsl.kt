@@ -1,6 +1,6 @@
 package io.blocks.examples.watchlist
 
-import io.blocks.core.datecreator.LocalDatePicker
+import io.blocks.core.date.LocalDatePicker
 
 interface ShowDsl {
 	val started: LocalDatePicker

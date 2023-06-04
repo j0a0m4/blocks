@@ -1,4 +1,4 @@
-package io.blocks.common
+package io.blocks.core.exceptions
 
 class RequiredField(override val message: String?) : Exception() {
 	companion object {
