@@ -3,19 +3,17 @@ package io.blocks.core.dsl
 import io.blocks.core.Bindings
 import io.blocks.core.interfaces.*
 
-class ConfigDslBuilder<C, P, R> : ConfigDsl<C, P, R>, Builder<BlockConfig<C, P, R>> {
+class BlockDslBuilder<C, P, R> : Dsl<C, P, R>, Builder<Block<C, P, R>> {
 	private val builder = BlockBuilder<C, P, R>()
 	private val memory = mutableListOf<R>()
 	private var mapper: Mapper<Command, R>? = null
 
-	override fun settings(block: Forwarder<Command>.() -> Unit) =
-		block { command ->
-			mapper?.map(command)
-				?.also { memory.add(it) }
-		}
+	override fun settings(block: Forwarder<Command>.() -> Unit) = block {
+		mapper?.map(it)?.also { memory.add(it) }
+	}
 
-	override fun mapping(mapper: Mapper<Command, R>) {
-		this.mapper = mapper
+	override fun mapping(block: Mapper<Command, R>) {
+		this.mapper = block
 	}
 
 	override val context: Bindings.Of<C>

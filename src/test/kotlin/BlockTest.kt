@@ -1,7 +1,7 @@
 import io.blocks.core.dsl.DslBlock
 import io.blocks.core.exceptions.UnsupportedCommand
-import io.blocks.core.interfaces.*
-import io.blocks.core.*
+import io.blocks.core.interfaces.Command
+import io.blocks.core.interfaces.Dispatcher
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.throwable.shouldHaveMessage
@@ -32,11 +32,11 @@ class BlockTest : BehaviorSpec({
 				context of RobotCommands
 				parameter of RobotOperations { command -> toMapping(command) }
 			}
-			mapping { command ->
-				when (command) {
-					is Direction -> "Robot turns $command"
-					is Speed     -> "Robot runs $command"
-					else         -> throw UnsupportedCommand of command
+			mapping {
+				when (it) {
+					is Direction -> "Robot turns $it"
+					is Speed     -> "Robot runs $it"
+					else         -> throw UnsupportedCommand of it
 				}
 			}
 		}

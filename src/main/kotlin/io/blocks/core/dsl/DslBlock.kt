@@ -1,15 +1,13 @@
 package io.blocks.core.dsl
 
-
 fun interface DslBlock<C, P, R> {
-	fun ConfigDsl<C, P, R>.configuration()
+	fun Dsl<C, P, R>.configuration()
 
-	val blockConfig: BlockConfig<C, P, R>
-		get() = ConfigDslBuilder<C, P, R>()
+	val block: Block<C, P, R>
+		get() = BlockDslBuilder<C, P, R>()
 			.apply { configuration() }
 			.build()
 
-	infix operator fun invoke(instructions: C.(P) -> Unit): Collection<R> =
-		blockConfig.apply { context.instructions(parameter) }.results
+	infix operator fun invoke(instructions: C.(P) -> Unit) =
+		block accept instructions
 }
-
