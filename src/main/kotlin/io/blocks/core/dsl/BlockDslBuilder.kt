@@ -13,7 +13,7 @@ class BlockDslBuilder<C, P, R> : Dsl<C, P, R>, Builder<Block<C, P, R>> {
 	}
 
 	override fun mapping(block: Mapper<Command, R>) {
-		this.mapper = block
+		mapper = block
 	}
 
 	override val context: Bindings.Of<C>
