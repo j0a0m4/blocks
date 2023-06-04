@@ -1,8 +1,7 @@
 package io.blocks.core.dsl
 
 import io.blocks.core.Bindings
-import io.blocks.core.interfaces.Command
-import io.blocks.core.interfaces.Mapper
+import io.blocks.core.interfaces.*
 
 interface Dsl<C, P, R> {
 	val context: Bindings.Of<C>
