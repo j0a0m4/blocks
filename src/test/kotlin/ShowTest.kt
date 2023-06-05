@@ -1,4 +1,4 @@
-import io.blocks.core.exceptions.RequiredField
+import io.blocks.core.error.RequiredField
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.data.forAll
 import io.kotest.data.row

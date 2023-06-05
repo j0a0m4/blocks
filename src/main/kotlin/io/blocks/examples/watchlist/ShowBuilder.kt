@@ -1,7 +1,7 @@
 package io.blocks.examples.watchlist
 
 import io.blocks.core.interfaces.Builder
-import io.blocks.core.exceptions.RequiredField
+import io.blocks.core.error.RequiredField
 import java.time.LocalDate
 
 abstract class ShowBuilder : Builder<Show> {

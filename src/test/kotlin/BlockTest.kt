@@ -1,5 +1,5 @@
 import io.blocks.core.dsl.DslBlock
-import io.blocks.core.exceptions.UnsupportedCommand
+import io.blocks.core.error.UnsupportedCommand
 import io.blocks.core.interfaces.Command
 import io.blocks.core.interfaces.Dispatcher
 import io.kotest.core.spec.style.BehaviorSpec
@@ -24,20 +24,18 @@ fun interface RobotOperations : Dispatcher<Command> {
 
 enum class Fake : Command { Unsupported }
 
+
 class BlockTest : BehaviorSpec({
 	Given("A BlockBuilder with binder and mapper configured") {
 		@Suppress("LocalVariableName")
 		val Robot = DslBlock {
 			settings {
 				context of RobotCommands
-				parameter of RobotOperations { command -> toMapping(command) }
+				parameter of RobotOperations { command -> asIt(command) }
 			}
 			mapping {
-				when (it) {
-					is Direction -> "Robot turns $it"
-					is Speed     -> "Robot runs $it"
-					else         -> throw UnsupportedCommand of it
-				}
+				Direction::class to { "Robot turns $it" }
+				Speed::class to { "Robot runs $it" }
 			}
 		}
 		When("the user send commands supported in mapper") {

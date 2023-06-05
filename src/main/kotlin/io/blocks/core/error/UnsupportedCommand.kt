@@ -1,4 +1,4 @@
-package io.blocks.core.exceptions
+package io.blocks.core.error
 
 class UnsupportedCommand(override val message: String?) : Exception() {
 	companion object {

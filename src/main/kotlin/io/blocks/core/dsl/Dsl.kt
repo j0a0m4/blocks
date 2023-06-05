@@ -7,5 +7,5 @@ interface Dsl<C, P, R> {
 	val context: Bindings.Of<C>
 	val parameter: Bindings.Of<P>
 	infix fun settings(block: Forwarder<Command>.() -> Unit)
-	infix fun mapping(block: Mapper<Command, R>)
+	infix fun mapping(to: Mapping<Command, R>.() -> Unit)
 }
