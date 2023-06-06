@@ -31,7 +31,7 @@ class BlockTest : BehaviorSpec({
 		val Robot = DslBlock {
 			settings {
 				context of RobotCommands
-				parameter of RobotOperations { command -> asIt(command) }
+				parameter of RobotOperations { forward(it) }
 			}
 			mapping {
 				Direction::class to { "Robot turns $it" }
