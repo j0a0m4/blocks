@@ -4,8 +4,8 @@ import io.blocks.core.interfaces.Command
 import io.blocks.core.interfaces.Dispatcher
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.throwable.shouldHaveMessage
-import org.junit.jupiter.api.assertThrows
 
 enum class Direction : Command { Left, Right; }
 enum class Speed : Command { Fast, Slow }
@@ -26,7 +26,7 @@ enum class Fake : Command { Unsupported }
 
 
 class BlockTest : BehaviorSpec({
-	Given("A BlockBuilder with binder and mapper configured") {
+	Given("A DslBlock with settings and mapping configured") {
 		@Suppress("LocalVariableName")
 		val Robot = DslBlock {
 			settings {
@@ -38,15 +38,15 @@ class BlockTest : BehaviorSpec({
 				Speed::class to { "Robot runs $it" }
 			}
 		}
-		When("the user send commands supported in mapper") {
-			Then("it should map and record it") {
+		When("the user send commands that are mapped") {
+			Then("it should return successful results") {
 				Robot {
 					it turns left
 					it runs fast
 					it turns right
 					it runs slow
 				}.run {
-					this shouldContainExactly setOf(
+					map { it.getOrNull() } shouldContainExactly setOf(
 						"Robot turns Left",
 						"Robot runs Fast",
 						"Robot turns Right",
@@ -55,11 +55,16 @@ class BlockTest : BehaviorSpec({
 				}
 			}
 		}
-		When("the user send commands that are not supported") {
-			Then("it should return a UnsupportedCommand exception") {
-				assertThrows<UnsupportedCommand> {
-					Robot { it dispatch Fake.Unsupported }
-				}.shouldHaveMessage("Unsupported of class Fake doesn't have any mappings")
+		When("the user send commands that are not mapped") {
+			Then("it should return a UnsupportedCommand failure") {
+				Robot { it dispatch Fake.Unsupported }.run {
+					forEach {
+						it.isFailure shouldBe true
+						(it.exceptionOrNull() is UnsupportedCommand) shouldBe true
+						it.exceptionOrNull()
+							?.shouldHaveMessage("Unsupported of class Fake doesn't have any mappings")
+					}
+				}
 			}
 		}
 	}

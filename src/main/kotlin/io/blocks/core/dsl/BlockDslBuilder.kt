@@ -5,15 +5,18 @@ import io.blocks.core.error.UnsupportedCommand
 import io.blocks.core.interfaces.*
 import kotlin.reflect.KClass
 
-
 class BlockDslBuilder<C, P, R> : Dsl<C, P, R>, Builder<Block<C, P, R>> {
-	private val memory = mutableListOf<R>()
+	private val memory = mutableListOf<Result<R>>()
 	private val mappings = mutableMapOf<KClass<*>, Mapper<Command, R>>()
 
-	private val forwarder = Forwarder<Command> { command ->
-		mappings[command::class]
-			?.map(command)?.also { memory.add(it) }
-			?: throw UnsupportedCommand of command
+	private val Command.mapped
+		get() = mappings[this::class]?.map(this)
+
+	private val forwarder = Forwarder<Command> {
+		when (val m = it.mapped) {
+			is Any -> Result.success(m)
+			else   -> Result.failure(UnsupportedCommand of it)
+		}.also { result -> memory.add(result) }
 	}
 
 	override fun settings(block: Forwarder<Command>.() -> Unit) =
