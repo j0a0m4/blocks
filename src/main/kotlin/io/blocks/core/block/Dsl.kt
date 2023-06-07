@@ -1,4 +1,4 @@
-package io.blocks.core.dsl
+package io.blocks.core.block
 
 import io.blocks.core.Bindings
 import io.blocks.core.interfaces.*

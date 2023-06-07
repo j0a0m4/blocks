@@ -1,4 +1,4 @@
-package io.blocks.core.dsl
+package io.blocks.core.block
 
 fun interface DslBlock<C, P, R> {
 	fun Dsl<C, P, R>.configuration()

@@ -1,4 +1,4 @@
-package io.blocks.core.dsl
+package io.blocks.core.block
 
 data class Block<C, P, R>(
 	private val context: C,

@@ -1,4 +1,4 @@
-import io.blocks.core.dsl.DslBlock
+import io.blocks.core.block.DslBlock
 import io.blocks.core.error.UnsupportedCommand
 import io.blocks.core.interfaces.Command
 import io.blocks.core.interfaces.Dispatcher
