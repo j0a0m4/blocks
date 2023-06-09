@@ -14,10 +14,10 @@ repositories {
 }
 
 dependencies {
+	implementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
+	implementation("io.kotest:kotest-assertions-core:5.6.2")
 	testImplementation(kotlin("test"))
 	testImplementation("io.kotest:kotest-runner-junit5:5.6.2")
-	testImplementation("io.kotest:kotest-assertions-core:5.6.2")
-	testImplementation("io.kotest:kotest-property:5.6.2")
 }
 
 testlogger {
