@@ -32,8 +32,8 @@ class MonthRangeTest : BehaviorSpec({
 	Given("an integer progression") {
 		When("I create a month range from it") {
 			Then("it should contain expected months") {
-				(1..12 step 2).month.run {
-					this shouldContainExactly setOf(JANUARY, MARCH, MAY, JULY, SEPTEMBER, NOVEMBER)
+				with(1..12 step 2) {
+					month shouldContainExactly setOf(JANUARY, MARCH, MAY, JULY, SEPTEMBER, NOVEMBER)
 				}
 			}
 		}
