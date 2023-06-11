@@ -1,6 +1,6 @@
 package io.blocks.examples.contact
 
-import Delegates.notBlankVal
+import io.blocks.core.Delegates.notBlankVal
 import io.blocks.core.interfaces.Block
 
 data class Contact(val name: String, val phone: String) {

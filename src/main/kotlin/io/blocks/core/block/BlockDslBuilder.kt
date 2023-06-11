@@ -5,7 +5,7 @@ import io.blocks.core.error.UnsupportedCommand
 import io.blocks.core.interfaces.*
 import kotlin.reflect.KClass
 
-class BlockDslBuilder<C, P, R> : Dsl<C, P, R>, Builder<Block<C, P, R>> {
+class BlockDslBuilder<C, P, R> : Dsl<C, P, R>, Builder<BlockData<C, P, R>> {
 	private val memory = mutableListOf<Result<R>>()
 	private val mappings = mutableMapOf<KClass<*>, Mapper<Command, R>>()
 

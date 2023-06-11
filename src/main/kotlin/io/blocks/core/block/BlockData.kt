@@ -1,6 +1,6 @@
 package io.blocks.core.block
 
-data class Block<C, P, R>(
+data class BlockData<C, P, R>(
 	private val context: C,
 	private val parameter: P,
 	private val results: Collection<Result<R>>
