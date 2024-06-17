@@ -24,7 +24,6 @@ fun interface RobotOperations : Dispatcher<Command> {
 
 enum class Fake : Command { Unsupported }
 
-
 class BlockTest : BehaviorSpec({
 	Given("A DslBlock with settings and mapping configured") {
 		@Suppress("LocalVariableName")
