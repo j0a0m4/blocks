@@ -1,13 +1,13 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
 
 plugins {
-	kotlin("jvm") version "1.8.20"
+	kotlin("jvm") version "2.0.20"
 	id("com.adarshr.test-logger") version "3.2.0"
 	application
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "io.j0a0m4"
+version = "1.0"
 
 repositories {
 	mavenCentral()
@@ -29,7 +29,7 @@ tasks.test {
 }
 
 kotlin {
-	jvmToolchain(11)
+	jvmToolchain(21)
 }
 
 application {
